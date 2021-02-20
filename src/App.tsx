@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useTypedSelector } from "./hooks/useTypedSelector";
+import { useUserActions } from "./hooks/useActions";
+import { useEffect } from "react";
 
 function App() {
+  const { getUsers } = useUserActions();
+  const { data, error, loading } = useTypedSelector((state) => state.user);
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h3>Users from JSON Placeholder</h3>
+      {data &&
+        data.map((row) => (
+          <div key={row.id}>
+            <h1>{row.email}</h1>
+          </div>
+        ))}
     </div>
   );
 }
